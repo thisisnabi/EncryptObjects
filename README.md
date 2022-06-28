@@ -10,7 +10,7 @@ You must enter you connection info and select some option for do that.
 
 
 
-## Features
+## Features / (encrypt)
 
 - Views
 - Procedures
