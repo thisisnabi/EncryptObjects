@@ -64,7 +64,7 @@ namespace EncryptObjects
 
                     try
                     {
-                        if (!vi.IsEncrypted)
+                        if (!vi.IsEncrypted && vi.Schema != "sys")
                         {    
                              vi.TextMode = false;
                              vi.IsEncrypted = encrypt;
@@ -94,7 +94,7 @@ namespace EncryptObjects
                      
                     try
                     {
-                        if (sp.IsEncrypted)
+                        if (sp.IsEncrypted && sp.Schema != "sys")
                         {
                              sp.TextMode = false;
                              sp.IsEncrypted = encrypt;
@@ -125,7 +125,7 @@ namespace EncryptObjects
                      
                     try
                     {
-                        if (func.IsEncrypted)
+                        if (func.IsEncrypted && func.Schema != "sys")
                         {
                             func.TextMode = false;
                             func.IsEncrypted = encrypt;
