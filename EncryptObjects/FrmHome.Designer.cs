@@ -45,8 +45,13 @@
             this.chkViews = new System.Windows.Forms.CheckBox();
             this.btnCheckConnecition = new System.Windows.Forms.Button();
             this.btnDecrypt = new System.Windows.Forms.Button();
+            this.rtxtLog = new System.Windows.Forms.RichTextBox();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.tspProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnEncrypt
@@ -55,7 +60,7 @@
             this.btnEncrypt.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnEncrypt.Name = "btnEncrypt";
             this.btnEncrypt.Size = new System.Drawing.Size(96, 35);
-            this.btnEncrypt.TabIndex = 0;
+            this.btnEncrypt.TabIndex = 3;
             this.btnEncrypt.Text = "Encrypt";
             this.btnEncrypt.UseVisualStyleBackColor = true;
             this.btnEncrypt.Click += new System.EventHandler(this.btnEncrypt_Click);
@@ -102,7 +107,6 @@
             this.txtServer.Name = "txtServer";
             this.txtServer.Size = new System.Drawing.Size(304, 31);
             this.txtServer.TabIndex = 0;
-            this.txtServer.Text = "192.168.8.55\\MSSQLSERVER2019";
             // 
             // txtDatabase
             // 
@@ -110,7 +114,6 @@
             this.txtDatabase.Name = "txtDatabase";
             this.txtDatabase.Size = new System.Drawing.Size(304, 31);
             this.txtDatabase.TabIndex = 1;
-            this.txtDatabase.Text = "Bargh0623";
             // 
             // txtUsername
             // 
@@ -118,7 +121,6 @@
             this.txtUsername.Name = "txtUsername";
             this.txtUsername.Size = new System.Drawing.Size(304, 31);
             this.txtUsername.TabIndex = 2;
-            this.txtUsername.Text = "sa";
             // 
             // txtPassword
             // 
@@ -126,7 +128,6 @@
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.Size = new System.Drawing.Size(304, 31);
             this.txtPassword.TabIndex = 3;
-            this.txtPassword.Text = "nk@2089tt";
             // 
             // label5
             // 
@@ -151,7 +152,7 @@
             this.groupBox1.Location = new System.Drawing.Point(12, 88);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(433, 243);
-            this.groupBox1.TabIndex = 3;
+            this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = " Database Connection ";
             // 
@@ -163,7 +164,7 @@
             this.groupBox2.Location = new System.Drawing.Point(469, 88);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(174, 243);
-            this.groupBox2.TabIndex = 4;
+            this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = " Objects ";
             // 
@@ -173,7 +174,7 @@
             this.chkFunctions.Location = new System.Drawing.Point(20, 116);
             this.chkFunctions.Name = "chkFunctions";
             this.chkFunctions.Size = new System.Drawing.Size(107, 29);
-            this.chkFunctions.TabIndex = 0;
+            this.chkFunctions.TabIndex = 2;
             this.chkFunctions.Text = "Functions";
             this.chkFunctions.UseVisualStyleBackColor = true;
             // 
@@ -183,7 +184,7 @@
             this.chkProcedures.Location = new System.Drawing.Point(20, 81);
             this.chkProcedures.Name = "chkProcedures";
             this.chkProcedures.Size = new System.Drawing.Size(119, 29);
-            this.chkProcedures.TabIndex = 0;
+            this.chkProcedures.TabIndex = 1;
             this.chkProcedures.Text = "Procedures";
             this.chkProcedures.UseVisualStyleBackColor = true;
             // 
@@ -203,7 +204,7 @@
             this.btnCheckConnecition.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnCheckConnecition.Name = "btnCheckConnecition";
             this.btnCheckConnecition.Size = new System.Drawing.Size(96, 35);
-            this.btnCheckConnecition.TabIndex = 0;
+            this.btnCheckConnecition.TabIndex = 2;
             this.btnCheckConnecition.Text = "Check";
             this.btnCheckConnecition.UseVisualStyleBackColor = true;
             this.btnCheckConnecition.Click += new System.EventHandler(this.btnCheckConnecition_Click);
@@ -213,17 +214,59 @@
             this.btnDecrypt.Location = new System.Drawing.Point(220, 339);
             this.btnDecrypt.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnDecrypt.Name = "btnDecrypt";
-            this.btnDecrypt.Size = new System.Drawing.Size(96, 35);
-            this.btnDecrypt.TabIndex = 0;
+            this.btnDecrypt.Size = new System.Drawing.Size(112, 35);
+            this.btnDecrypt.TabIndex = 4;
             this.btnDecrypt.Text = "Decrypt";
             this.btnDecrypt.UseVisualStyleBackColor = true;
+            this.btnDecrypt.Click += new System.EventHandler(this.btnDecrypt_Click);
+            // 
+            // rtxtLog
+            // 
+            this.rtxtLog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rtxtLog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.rtxtLog.Location = new System.Drawing.Point(12, 395);
+            this.rtxtLog.Name = "rtxtLog";
+            this.rtxtLog.Size = new System.Drawing.Size(814, 276);
+            this.rtxtLog.TabIndex = 5;
+            this.rtxtLog.Text = "";
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Enabled = false;
+            this.btnCancel.Location = new System.Drawing.Point(340, 339);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(105, 35);
+            this.btnCancel.TabIndex = 5;
+            this.btnCancel.Text = "Stop";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tspProgressBar});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 688);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(838, 22);
+            this.statusStrip1.TabIndex = 6;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // tspProgressBar
+            // 
+            this.tspProgressBar.Name = "tspProgressBar";
+            this.tspProgressBar.Size = new System.Drawing.Size(100, 16);
             // 
             // FrmHome
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(668, 671);
+            this.ClientSize = new System.Drawing.Size(838, 710);
+            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.rtxtLog);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.btnCheckConnecition);
@@ -231,10 +274,10 @@
             this.Controls.Add(this.btnEncrypt);
             this.Controls.Add(this.groupBox1);
             this.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(854, 749);
             this.Name = "FrmHome";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Encrypt Sql Server Database Objects";
@@ -243,6 +286,8 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -267,5 +312,9 @@
         private CheckBox chkViews;
         private Button btnCheckConnecition;
         private Button btnDecrypt;
+        private RichTextBox rtxtLog;
+        private Button btnCancel;
+        private StatusStrip statusStrip1;
+        private ToolStripProgressBar tspProgressBar;
     }
 }

@@ -6,6 +6,8 @@ namespace EncryptObjects
 {
     public partial class FrmHome : Form
     {
+        CancellationTokenSource? tokenSource;
+
         public FrmHome()
         {
             InitializeComponent();
@@ -15,93 +17,146 @@ namespace EncryptObjects
 
         private void FrmHome_Load(object sender, EventArgs e)
         {
-
+           
         }
 
+     
 
 
-        private void btnEncrypt_Click(object sender, EventArgs e)
+
+        public Task StartAction(Database database, bool encrypt,CancellationToken cancellationToken) 
         {
 
-            var smapho = new Semaphore(1, 1);
-
-            if (TryGetDatabase(out Database? database) && database != null)
+            var viewCount = database.Views.Count;
+            var spCount = database.StoredProcedures.Count;
+            var fcCount = database.UserDefinedFunctions.Count;
+            var totalCount = 0;
+            var currentCount = 0;
+            #region Counter
+            if (chkViews.Checked)
             {
-                var viewCount = database.Views.Count;
-                var spCount = database.StoredProcedures.Count;
-                var fcCount = database.UserDefinedFunctions.Count;
-                var totalCount = 0;
-                var currentCount = 0;
-                #region Counter
-                if (chkViews.Checked)
+                totalCount += viewCount;
+            }
+            if (chkFunctions.Checked)
+            {
+                totalCount += fcCount;
+            }
+            if (chkProcedures.Checked)
+            {
+                totalCount += spCount;
+            }
+            #endregion
+            
+            if (cancellationToken.IsCancellationRequested)
+            { RtextLog("Task Canceled"); BtnStatus(true);   return Task.CompletedTask; }
+         
+            if (chkViews.Checked)
+            {
+                for (int index = 0; index < viewCount; index++)
                 {
-                    totalCount += viewCount;
-                }
-                if (chkFunctions.Checked)
-                {
-                    totalCount += fcCount;
-                }
-                if (chkProcedures.Checked)
-                {
-                    totalCount += spCount;
-                }
-                #endregion
+                    if (cancellationToken.IsCancellationRequested)
+                    { RtextLog("Task Canceled"); BtnStatus(true); return Task.CompletedTask; }
+                    currentCount++;
+                    UpdateUI(totalCount, currentCount);
+                    var vi = database.Views[index];
 
-                if (chkViews.Checked)
-                { 
-                    for (int index = 0; index < viewCount; index++)
+                    RtextLog($"\nstart {(encrypt ? "encrypt" : "decrypt")} [view] {vi.Name} - ");
+
+                    try
                     {
-                        currentCount++;
-
-                        var vi = database.Views[index];
                         if (!vi.IsEncrypted)
-                        {
-                            vi.TextMode = false;
-                            vi.IsEncrypted = true;
-                            vi.TextMode = true;
-                            vi.Alter();
+                        {    
+                             vi.TextMode = false;
+                             vi.IsEncrypted = encrypt;
+                             vi.TextMode = true;
+                             vi.Alter();
                         }
+                        RtextLog($"done");
+                    }
+                    catch (Exception)
+                    {
+                        RtextLog($"error");
                     }
                 }
+            }
 
+            if (chkProcedures.Checked)
+            {
+                for (int i = 0; i < spCount; i++)
+                {
+                    if (cancellationToken.IsCancellationRequested)
+                    { RtextLog("Task Canceled"); BtnStatus(true); return Task.CompletedTask; }
+                    currentCount++;
+                    UpdateUI(totalCount, currentCount);
+                    var sp = database.StoredProcedures[i];
 
-
-                if (chkProcedures.Checked)
-                {  
-                    for (int i = 0; i < spCount; i++)
+                    RtextLog($"\nstart {(encrypt ? "encrypt" : "decrypt")} [sp] {sp.Name} - ");
+                     
+                    try
                     {
-                        currentCount++;
-
-                        var sp = database.StoredProcedures[i];
                         if (sp.IsEncrypted)
                         {
-                            sp.TextMode = false;
-                            sp.IsEncrypted = true;
-                            sp.TextMode = true;
-                            sp.Alter();
+                             sp.TextMode = false;
+                             sp.IsEncrypted = encrypt;
+                             sp.TextMode = true;
+                             sp.Alter();
                         }
+
+                        RtextLog($"done");
+                    }
+                    catch (Exception)
+                    {
+                        RtextLog($"error");
                     }
                 }
-                 
-                if (chkFunctions.Checked)
-                { 
-                    for (int i = 0; i < fcCount; i++)
-                    {
-                        currentCount++;
+            }
 
-                        var func = database.StoredProcedures[i];
- 
+            if (chkFunctions.Checked)
+            {
+                for (int i = 0; i < fcCount; i++)
+                {
+                    if (cancellationToken.IsCancellationRequested)
+                    { RtextLog("Task Canceled"); BtnStatus(true); return Task.CompletedTask; }
+                    currentCount++;
+                    UpdateUI(totalCount, currentCount);
+                    var func = database.StoredProcedures[i];
+
+                    RtextLog($"\nstart {(encrypt ? "encrypt" : "decrypt")} [func] {func.Name} - ");
+                     
+                    try
+                    {
                         if (func.IsEncrypted)
                         {
                             func.TextMode = false;
-                            func.IsEncrypted = true;
+                            func.IsEncrypted = encrypt;
                             func.TextMode = true;
                             func.Alter();
                         }
+
+                        RtextLog($"done");
                     }
-
+                    catch (Exception)
+                    {
+                        RtextLog($"error");
+                    }
                 }
-
+            }
+            
+            BtnStatus(true);
+            RtextLog("Task Completed");
+            return Task.CompletedTask;
+        }
+         
+        private void btnEncrypt_Click(object sender, EventArgs e)
+        {
+            BtnStatus(false);
+            TakeTokenSource();
+            StartLogging("Task Encryption Started");
+             
+            if (TryGetDatabase(out Database? database) && database != null)
+            {
+                Task.Run(() => StartAction(database, true, tokenSource.Token));
+ 
             }
             else
             {
@@ -109,6 +164,67 @@ namespace EncryptObjects
             }
         }
 
+        private void btnDecrypt_Click(object sender, EventArgs e)
+        {
+            BtnStatus(false);
+            TakeTokenSource();
+            StartLogging("Task Decryption Started");
+            if (TryGetDatabase(out Database? database) && database != null)
+            {
+                Task.Run(() => StartAction(database, false, tokenSource.Token));
+            }
+            else
+            {
+                MessageBox.Show("Connection failed.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            tokenSource.Cancel();
+            BtnStatus(true);
+        }
+
+        #region Helpers
+        private void TakeTokenSource()
+        {
+            tokenSource = new CancellationTokenSource();
+        }
+
+
+        private void BtnStatus(bool status)
+        {
+            Invoke(new Action(() => {
+                btnEncrypt.Enabled = status;
+                btnDecrypt.Enabled = status;
+                btnCheckConnecition.Enabled = status;
+                btnCancel.Enabled = !status;
+                tspProgressBar.Value = 0;
+            }));
+        }
+
+        private void UpdateUI(int total, int current)
+        {
+            var progressValue = (100 / (double)total) * current;
+
+            Invoke(new Action(() => {
+                tspProgressBar.Value = Convert.ToInt32(progressValue);
+            }));
+        }
+
+        private void RtextLog(string Description)
+        {
+            Invoke(new Action(() => {
+                rtxtLog.AppendText($"{Description}");
+                rtxtLog.Select(rtxtLog.TextLength + 1, 0);
+       
+            }));
+        }
+        private void StartLogging(string desc)
+        {
+            rtxtLog.AppendText($"{desc}------");
+            rtxtLog.AppendText($"\nat {DateTime.Now.ToString()}------");
+        }
 
         private bool TryGetDatabase(out Database? database)
         {
@@ -135,8 +251,12 @@ namespace EncryptObjects
             return true;
         }
 
+
         private void btnCheckConnecition_Click(object sender, EventArgs e)
         {
+
+            btnEncrypt.Enabled = false;
+            btnDecrypt.Enabled = false;
 
             if (TryGetDatabase(out _))
             {
@@ -146,6 +266,13 @@ namespace EncryptObjects
             {
                 MessageBox.Show("Connection failed.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+            btnEncrypt.Enabled = true;
+            btnDecrypt.Enabled = true;
         }
+
+        #endregion
+
+
     }
 }
