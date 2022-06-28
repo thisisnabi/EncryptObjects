@@ -28,34 +28,37 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnProcess = new System.Windows.Forms.Button();
+            this.btnEncrypt = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.txtServer = new System.Windows.Forms.TextBox();
+            this.txtDatabase = new System.Windows.Forms.TextBox();
+            this.txtUsername = new System.Windows.Forms.TextBox();
+            this.txtPassword = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.chkFunctions = new System.Windows.Forms.CheckBox();
+            this.chkProcedures = new System.Windows.Forms.CheckBox();
+            this.chkViews = new System.Windows.Forms.CheckBox();
+            this.btnCheckConnecition = new System.Windows.Forms.Button();
+            this.btnDecrypt = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
-            // btnProcess
+            // btnEncrypt
             // 
-            this.btnProcess.Location = new System.Drawing.Point(12, 350);
-            this.btnProcess.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.btnProcess.Name = "btnProcess";
-            this.btnProcess.Size = new System.Drawing.Size(96, 35);
-            this.btnProcess.TabIndex = 0;
-            this.btnProcess.Text = "Process";
-            this.btnProcess.UseVisualStyleBackColor = true;
+            this.btnEncrypt.Location = new System.Drawing.Point(116, 339);
+            this.btnEncrypt.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnEncrypt.Name = "btnEncrypt";
+            this.btnEncrypt.Size = new System.Drawing.Size(96, 35);
+            this.btnEncrypt.TabIndex = 0;
+            this.btnEncrypt.Text = "Encrypt";
+            this.btnEncrypt.UseVisualStyleBackColor = true;
+            this.btnEncrypt.Click += new System.EventHandler(this.btnEncrypt_Click);
             // 
             // label1
             // 
@@ -93,33 +96,37 @@
             this.label4.TabIndex = 1;
             this.label4.Text = "Password :";
             // 
-            // textBox1
+            // txtServer
             // 
-            this.textBox1.Location = new System.Drawing.Point(112, 35);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(304, 31);
-            this.textBox1.TabIndex = 0;
+            this.txtServer.Location = new System.Drawing.Point(112, 35);
+            this.txtServer.Name = "txtServer";
+            this.txtServer.Size = new System.Drawing.Size(304, 31);
+            this.txtServer.TabIndex = 0;
+            this.txtServer.Text = "192.168.8.55\\MSSQLSERVER2019";
             // 
-            // textBox2
+            // txtDatabase
             // 
-            this.textBox2.Location = new System.Drawing.Point(112, 85);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(304, 31);
-            this.textBox2.TabIndex = 1;
+            this.txtDatabase.Location = new System.Drawing.Point(112, 85);
+            this.txtDatabase.Name = "txtDatabase";
+            this.txtDatabase.Size = new System.Drawing.Size(304, 31);
+            this.txtDatabase.TabIndex = 1;
+            this.txtDatabase.Text = "Bargh0623";
             // 
-            // textBox3
+            // txtUsername
             // 
-            this.textBox3.Location = new System.Drawing.Point(112, 135);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(304, 31);
-            this.textBox3.TabIndex = 2;
+            this.txtUsername.Location = new System.Drawing.Point(112, 135);
+            this.txtUsername.Name = "txtUsername";
+            this.txtUsername.Size = new System.Drawing.Size(304, 31);
+            this.txtUsername.TabIndex = 2;
+            this.txtUsername.Text = "sa";
             // 
-            // textBox4
+            // txtPassword
             // 
-            this.textBox4.Location = new System.Drawing.Point(112, 185);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(304, 31);
-            this.textBox4.TabIndex = 3;
+            this.txtPassword.Location = new System.Drawing.Point(112, 185);
+            this.txtPassword.Name = "txtPassword";
+            this.txtPassword.Size = new System.Drawing.Size(304, 31);
+            this.txtPassword.TabIndex = 3;
+            this.txtPassword.Text = "nk@2089tt";
             // 
             // label5
             // 
@@ -133,14 +140,14 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.textBox4);
-            this.groupBox1.Controls.Add(this.textBox3);
+            this.groupBox1.Controls.Add(this.txtPassword);
+            this.groupBox1.Controls.Add(this.txtUsername);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.textBox2);
+            this.groupBox1.Controls.Add(this.txtDatabase);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.txtServer);
             this.groupBox1.Location = new System.Drawing.Point(12, 88);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(433, 243);
@@ -150,55 +157,78 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.checkBox3);
-            this.groupBox2.Controls.Add(this.checkBox2);
-            this.groupBox2.Controls.Add(this.checkBox1);
+            this.groupBox2.Controls.Add(this.chkFunctions);
+            this.groupBox2.Controls.Add(this.chkProcedures);
+            this.groupBox2.Controls.Add(this.chkViews);
             this.groupBox2.Location = new System.Drawing.Point(469, 88);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(174, 243);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = " Scopes ";
+            this.groupBox2.Text = " Objects ";
             // 
-            // checkBox3
+            // chkFunctions
             // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(37, 118);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(107, 29);
-            this.checkBox3.TabIndex = 0;
-            this.checkBox3.Text = "Functions";
-            this.checkBox3.UseVisualStyleBackColor = true;
+            this.chkFunctions.AutoSize = true;
+            this.chkFunctions.Location = new System.Drawing.Point(20, 116);
+            this.chkFunctions.Name = "chkFunctions";
+            this.chkFunctions.Size = new System.Drawing.Size(107, 29);
+            this.chkFunctions.TabIndex = 0;
+            this.chkFunctions.Text = "Functions";
+            this.chkFunctions.UseVisualStyleBackColor = true;
             // 
-            // checkBox2
+            // chkProcedures
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(37, 83);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(119, 29);
-            this.checkBox2.TabIndex = 0;
-            this.checkBox2.Text = "Procedures";
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this.chkProcedures.AutoSize = true;
+            this.chkProcedures.Location = new System.Drawing.Point(20, 81);
+            this.chkProcedures.Name = "chkProcedures";
+            this.chkProcedures.Size = new System.Drawing.Size(119, 29);
+            this.chkProcedures.TabIndex = 0;
+            this.chkProcedures.Text = "Procedures";
+            this.chkProcedures.UseVisualStyleBackColor = true;
             // 
-            // checkBox1
+            // chkViews
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(37, 48);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(76, 29);
-            this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "Views";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.chkViews.AutoSize = true;
+            this.chkViews.Location = new System.Drawing.Point(20, 46);
+            this.chkViews.Name = "chkViews";
+            this.chkViews.Size = new System.Drawing.Size(76, 29);
+            this.chkViews.TabIndex = 0;
+            this.chkViews.Text = "Views";
+            this.chkViews.UseVisualStyleBackColor = true;
+            // 
+            // btnCheckConnecition
+            // 
+            this.btnCheckConnecition.Location = new System.Drawing.Point(12, 339);
+            this.btnCheckConnecition.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnCheckConnecition.Name = "btnCheckConnecition";
+            this.btnCheckConnecition.Size = new System.Drawing.Size(96, 35);
+            this.btnCheckConnecition.TabIndex = 0;
+            this.btnCheckConnecition.Text = "Check";
+            this.btnCheckConnecition.UseVisualStyleBackColor = true;
+            this.btnCheckConnecition.Click += new System.EventHandler(this.btnCheckConnecition_Click);
+            // 
+            // btnDecrypt
+            // 
+            this.btnDecrypt.Location = new System.Drawing.Point(220, 339);
+            this.btnDecrypt.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnDecrypt.Name = "btnDecrypt";
+            this.btnDecrypt.Size = new System.Drawing.Size(96, 35);
+            this.btnDecrypt.TabIndex = 0;
+            this.btnDecrypt.Text = "Decrypt";
+            this.btnDecrypt.UseVisualStyleBackColor = true;
             // 
             // FrmHome
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(668, 566);
+            this.ClientSize = new System.Drawing.Size(668, 671);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.btnProcess);
+            this.Controls.Add(this.btnCheckConnecition);
+            this.Controls.Add(this.btnDecrypt);
+            this.Controls.Add(this.btnEncrypt);
             this.Controls.Add(this.groupBox1);
             this.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -220,20 +250,22 @@
 
         #endregion
 
-        private Button btnProcess;
+        private Button btnEncrypt;
         private Label label1;
         private Label label2;
         private Label label3;
         private Label label4;
-        private TextBox textBox1;
-        private TextBox textBox2;
-        private TextBox textBox3;
-        private TextBox textBox4;
+        private TextBox txtServer;
+        private TextBox txtDatabase;
+        private TextBox txtUsername;
+        private TextBox txtPassword;
         private Label label5;
         private GroupBox groupBox1;
         private GroupBox groupBox2;
-        private CheckBox checkBox3;
-        private CheckBox checkBox2;
-        private CheckBox checkBox1;
+        private CheckBox chkFunctions;
+        private CheckBox chkProcedures;
+        private CheckBox chkViews;
+        private Button btnCheckConnecition;
+        private Button btnDecrypt;
     }
 }
