@@ -26,6 +26,7 @@ namespace EncryptObjects
 
         public Task StartAction(Database database, bool encrypt,CancellationToken cancellationToken) 
         {
+            List<string> listError = new();
 
             var viewCount = database.Views.Count;
             var spCount = database.StoredProcedures.Count;
@@ -64,7 +65,14 @@ namespace EncryptObjects
 
                     try
                     {
-                        if (!vi.IsEncrypted && vi.Schema != "sys")
+                        if (vi.Schema == "sys")
+                        {
+                            RtextLog($"sys schema - skipped");
+                            continue;
+                        }
+
+
+                        if (!vi.IsEncrypted)
                         {    
                              vi.TextMode = false;
                              vi.IsEncrypted = encrypt;
@@ -73,9 +81,10 @@ namespace EncryptObjects
                         }
                         RtextLog($"done");
                     }
-                    catch (Exception)
+                    catch (Exception excp)
                     {
                         RtextLog($"error");
+                        listError.Add($"Error on [view] {vi.Schema}.{vi.Name} - {excp.Message}");
                     }
                 }
             }
@@ -94,7 +103,13 @@ namespace EncryptObjects
                      
                     try
                     {
-                        if (sp.IsEncrypted && sp.Schema != "sys")
+                        if (sp.Schema == "sys")
+                        {
+                            RtextLog($"sys schema - skipped");
+                            continue;
+                        }
+
+                        if (sp.IsEncrypted)
                         {
                              sp.TextMode = false;
                              sp.IsEncrypted = encrypt;
@@ -104,9 +119,10 @@ namespace EncryptObjects
 
                         RtextLog($"done");
                     }
-                    catch (Exception)
+                    catch (Exception excp)
                     {
                         RtextLog($"error");
+                        listError.Add($"Error on [view] {sp.Schema}.{sp.Name} - {excp.Message}");
                     }
                 }
             }
@@ -125,7 +141,13 @@ namespace EncryptObjects
                      
                     try
                     {
-                        if (func.IsEncrypted && func.Schema != "sys")
+                        if (func.Schema == "sys")
+                        {
+                            RtextLog($"sys schema - skipped");
+                            continue;
+                        }
+
+                        if (func.IsEncrypted)
                         {
                             func.TextMode = false;
                             func.IsEncrypted = encrypt;
@@ -135,15 +157,31 @@ namespace EncryptObjects
 
                         RtextLog($"done");
                     }
-                    catch (Exception)
+                    catch (Exception excp)
                     {
                         RtextLog($"error");
+                        listError.Add($"Error on [view] {func.Schema}.{func.Name} - {excp.Message}");
                     }
                 }
             }
             
             BtnStatus(true);
             RtextLog("Task Completed");
+
+            if (listError.Count > 0)
+            {
+                var path = $"log-{DateTime.Now.Ticks}.txt";
+
+                using (var wr = new StreamWriter(path))
+                {
+                    foreach (var error in listError)
+                    {
+                        wr.WriteLine(error);
+                    }
+                }
+                MessageBox.Show($"logged error on file {path}", "log", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
             return Task.CompletedTask;
         }
          
