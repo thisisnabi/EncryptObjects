@@ -109,7 +109,7 @@ namespace EncryptObjects
                             continue;
                         }
 
-                        if (sp.IsEncrypted)
+                        if (!sp.IsEncrypted)
                         {
                              sp.TextMode = false;
                              sp.IsEncrypted = encrypt;
@@ -135,7 +135,7 @@ namespace EncryptObjects
                     { RtextLog("Task Canceled"); BtnStatus(true); return Task.CompletedTask; }
                     currentCount++;
                     UpdateUI(totalCount, currentCount);
-                    var func = database.StoredProcedures[i];
+                    var func = database.UserDefinedFunctions[i];
 
                     RtextLog($"\nstart {(encrypt ? "encrypt" : "decrypt")} [func] {func.Name} - ");
                      
@@ -147,7 +147,7 @@ namespace EncryptObjects
                             continue;
                         }
 
-                        if (func.IsEncrypted)
+                        if (!func.IsEncrypted)
                         {
                             func.TextMode = false;
                             func.IsEncrypted = encrypt;
